@@ -1,0 +1,7 @@
+Django>=4.2,<5.3
+gunicorn
+psycopg2-binary         # si usás PostgreSQL
+python-dotenv
+weasyprint              # para generar PDFs (opcional, requiere dependencias del sistema)
+django-crispy-forms     # opcional para formularios bonitos
+django-environ
