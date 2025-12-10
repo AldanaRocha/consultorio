@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Mis Turnos</h2>
+
+    <div class="d-flex justify-content-center gap-4 mt-3">
+        <a href="{% url 'turnos:crear_turno' %}" 
+           class="btn btn-outline-success px-4 py-2 fw-semibold rounded-3">
+            Solicitar nuevo turno
+        </a>
+
+        <a href="{% url 'home' %}" 
+           class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-3">
+            Volver
+        </a>
+    </div>
+
+    {% if turnos %}
+        <table class="table table-hover shadow-sm rounded mt-4">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Especialidad</th>
+                    <th>Médico</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turno in turnos %}
+                <tr>
+                    <td>{{ turno.fecha_hora|date:"d/m/Y H:i" }}</td>
+
+                    <!-- 🔥 Corrección acá -->
+                    <td>{{ turno.especialidad.tipo }}</td>
+
+                    <td>
+                        {% if turno.medico %}
+                            {{ turno.medico.get_full_name|default:turno.medico.username }}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="badge bg-secondary">{{ turno.estado }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="alert alert-info mt-4">
+            No tenés turnos registrados.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

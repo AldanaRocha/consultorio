@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Especialidades</h2>
+
+<div class="d-flex align-items-center gap-2 mb-3">
+
+    <!-- Botón Crear (verde suave, estilo premium) -->
+    <a href="{% url 'especialidades:crear_especialidad' %}" 
+       class="btn btn-outline-success px-4 py-2 fw-semibold rounded-3">
+        Crear Especialidad
+    </a>
+
+    <!-- Botón Volver (gris premium) -->
+    <a href="{% url 'home' %}" 
+       class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-3">
+        Volver
+    </a>
+
+</div>
+
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Especialidad</th>
+                <th>Médico</th>
+                <th>Días</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for esp in especialidades %}
+            <tr>
+                <td>{{ esp.id }}</td>
+                <td>{{ esp.tipo }}</td>
+                <td>{{ esp.id }}</td>
+                <td>{{ esp.descripcion }}</td>
+                <td>
+                    <a href="{% url 'especialidades:editar_especialidad' esp.id %}"
+                    class="btn btn-outline-secondary btn-sm me-2">
+                        Editar
+                    </a>
+
+                    <a href="{% url 'especialidades:eliminar_especialidad' esp.id %}"
+                    class="btn btn-outline-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No hay especialidades.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+</div>
+{% endblock %}

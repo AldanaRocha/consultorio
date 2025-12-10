@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Editar Turno</h2>
+
+        <a href="{% url 'turnos:turnos_recepcion' %}" 
+           class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-3">
+            Volver
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Paciente -->
+                {% if form.paciente %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Paciente</label>
+                    {{ form.paciente }}
+                </div>
+                {% endif %}
+
+                <!-- Especialidad -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Especialidad</label>
+                    {{ form.especialidad }}
+                </div>
+
+                <!-- Médico -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Médico</label>
+                    {{ form.medico }}
+                </div>
+
+                <!-- Fecha y Hora -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Fecha y Hora</label>
+                    {{ form.fecha_hora }}
+                </div>
+
+                <!-- Asistencia -->
+                {% if form.asistencia_confirmada %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Asistencia confirmada</label>
+                    {{ form.asistencia_confirmada }}
+                </div>
+                {% endif %}
+
+                <!-- Estado -->
+                {% if form.estado %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Estado del turno</label>
+                    {{ form.estado }}
+                </div>
+                {% endif %}
+
+                <div class="mt-4 d-flex justify-content-end">
+                    <button class="btn btn-primary px-4 py-2 fw-semibold rounded-3">
+                        Guardar Cambios
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

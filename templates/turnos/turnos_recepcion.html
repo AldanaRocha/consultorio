@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load grupos_tags %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Listado de Turnos</h2>
+
+        <!-- BOTÓN CREAR TURNO -->
+        <a href="{% url 'turnos:crear_turno' %}" class="btn btn-outline-success px-4 py-2 fw-semibold rounded-3">
+            Crear Turno
+        </a>
+    </div>
+
+    {% if turnos %}
+        <table class="table table-striped table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Médico</th>
+                    <th>Fecha y Hora</th>
+                    <th>Asistencia</th>
+                    <th>Estado</th>
+
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turno in turnos %}
+                    <tr>
+                        <td>{{ turno.paciente.username }}</td>
+                        <td>{{ turno.especialidad.tipo }}</td>
+                        <td>{{ turno.medico.username }}</td>
+                        <td>{{ turno.fecha_hora|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            {% if turno.asistencia_confirmada %}
+                                <span class="badge bg-success">En espera</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><Em>Pendiente</Em></span>
+                            {% endif %}
+                        </td>
+                        
+                        <td>{{ turno.get_estado_display }}</td>
+
+                        
+
+                        <td>
+                            {% if user|has_group:"Recepcionista" or user|has_group:"Director" %}
+                                <a href="{% url 'turnos:editar_turno' turno.id %}" class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="alert alert-info">No hay turnos cargados todavía.</div>
+    {% endif %}
+</div>
+{% endblock %}

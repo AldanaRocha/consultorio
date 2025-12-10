@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load grupos_tags %}
 
 {% block content %}
 <h2>Crear cuenta</h2>
@@ -9,18 +10,21 @@
     
     {{ form.as_p }}
 
-    {% if user.is_superuser or user.groups.filter(name="Director") %}
+    {% if user.is_superuser or user|has_group:"Director" %}
 
-        <!-- SOLO DIRECTOR VE ESTOS ROLES -->
+        <!-- SOLO DIRECTOR Y SUPERUSER VEN ESTOS ROLES -->
         <label for="rol">Selecciona un rol:</label>
         <select name="rol" id="rol" class="form-control mb-3">
             {% for r in roles %}
                 <option value="{{ r.name }}">{{ r.name }}</option>
             {% endfor %}
         </select>
+
     {% else %}
-        <!-- RECEPCIONISTA Y PACIENTE SOLO PUEDEN CREAR PACIENTES -->
+
+        <!-- RECEPCIONISTA, MÉDICO Y PACIENTE SOLO PUEDEN CREAR PACIENTES -->
         <input type="hidden" name="rol" value="Paciente">
+
     {% endif %}
 
     <button type="submit" class="btn btn-primary">Registrarse</button>

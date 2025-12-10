@@ -1,13 +1,12 @@
-# accounts/decorators.py
-from django.shortcuts import redirect
-from functools import wraps
+from django.contrib.auth.decorators import user_passes_test
 
-def role_required(group_name, redirect_url='home'):
-    def decorator(view_func):
-        @wraps(view_func)
-        def _wrapped(request, *args, **kwargs):
-            if request.user.is_authenticated and request.user.groups.filter(name=group_name).exists():
-                return view_func(request, *args, **kwargs)
-            return redirect(redirect_url)
-        return _wrapped
-    return decorator
+def grupo_requerido(nombre_grupo):
+    return user_passes_test(
+        lambda u: u.is_authenticated and u.groups.filter(name=nombre_grupo).exists(),
+        login_url='/accounts/login/'
+    )
+
+director_required = grupo_requerido("Director")
+medico_required = grupo_requerido("Medico")
+recepcionista_required = grupo_requerido("Recepcionista")
+paciente_required = grupo_requerido("Paciente")

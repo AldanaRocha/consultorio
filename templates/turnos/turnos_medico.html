@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Mis Turnos</h2>
+
+    {% if turnos %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Fecha & Hora</th>
+                        <th>Asistencia</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                        <tbody>
+                {% for turno in turnos %}
+                    <tr>
+                        <td>{{ turno.paciente.username }}</td>
+                        <td>{{ turno.fecha_hora|date:"d/m/Y H:i" }}</td>
+
+                        <!-- ASISTENCIA -->
+                        <td>
+                            {% if turno.asistencia_confirmada %}
+                                <span class="badge bg-success">En espera</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><Em>Pendiente</Em></span>
+                            {% endif %}
+                        </td>
+                        </td>
+
+                        <!-- ESTADO -->
+                        <td>{{ turno.estado }}</span></td>
+
+                        <!-- ACCIONES -->
+                        <td class="acciones">
+                            {% if turno.estado != "atendido" and turno.estado != "cancelado" %}
+                                <form method="POST"
+                                    action="{% url 'turnos:cambiar_estado_turno' turno.id %}"
+                                    class="form-atender">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="estado" value="atendido">
+                                    <button class="btn btn-success btn-sm">
+                                        Marcar Atendido
+                                    </button>
+                                </form>
+                            {% else %}
+                                <span class="text-muted">✓ Finalizado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+            </table>
+        </div>
+
+    {% else %}
+        <div class="alert alert-info">No tienes turnos asignados por el momento.</div>
+    {% endif %}
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".form-atender").forEach(form => {
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            let url = this.action;
+            let formData = new FormData(this);
+
+            let response = await fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            let data = await response.json();
+
+            if (data.ok) {
+                // 🔄 REFRESCAR LA PÁGINA
+                window.location.reload();
+            } else {
+                alert("Error al actualizar el estado.");
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}
