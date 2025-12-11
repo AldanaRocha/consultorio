@@ -1,0 +1,270 @@
+{% extends "admin/change_form.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        /* ===================================
+           FORMULARIO OSCURO Y PROFESIONAL
+           =================================== */
+
+        #content {
+            background: #2d3748 !important;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            width: 85%;
+            margin: 30px auto;
+            border: 1px solid #4a5568;
+        }
+
+        #content h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f7fafc !important;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4a5568;
+            padding-bottom: 12px;
+        }
+
+        /* Módulos del formulario */
+        .module {
+            background: #374151 !important;
+            border-radius: 12px !important;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a5568 !important;
+        }
+
+        .module h2 {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%) !important;
+            color: #90cdf4 !important;
+            padding: 14px;
+            border-radius: 8px;
+            margin: -20px -20px 20px -20px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #4a5568;
+        }
+
+        /* Labels de formulario */
+        .form-row label,
+        label {
+            color: #90cdf4 !important;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Inputs, selects, textarea */
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="date"],
+        input[type="datetime-local"],
+        input[type="time"],
+        input[type="url"],
+        input[type="password"],
+        select,
+        textarea {
+            background-color: #1a202c !important;
+            color: #e2e8f0 !important;
+            border: 1px solid #4a5568 !important;
+            border-radius: 8px !important;
+            padding: 10px 12px !important;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #90cdf4 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(144, 205, 244, 0.25) !important;
+            background-color: #2d3748 !important;
+        }
+
+        /* Placeholder */
+        ::placeholder {
+            color: #718096 !important;
+            opacity: 1 !important;
+        }
+
+        /* Texto de ayuda */
+        .help,
+        .help-block {
+            color: #a0aec0 !important;
+            font-size: 13px;
+        }
+
+        /* Filas de formulario */
+        .form-row {
+            margin-bottom: 20px !important;
+            padding: 12px;
+            background: rgba(26, 32, 44, 0.3);
+            border-radius: 8px;
+        }
+
+        /* Fieldsets */
+        fieldset {
+            background: #374151 !important;
+            border: 1px solid #4a5568 !important;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        fieldset h2 {
+            color: #90cdf4 !important;
+            font-weight: bold;
+        }
+
+        /* Botones de acción */
+        .submit-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #1a202c !important;
+            border-radius: 10px;
+            border: 1px solid #4a5568;
+        }
+
+        .submit-row input,
+        .submit-row button {
+            border-radius: 8px !important;
+            padding: 12px 24px !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none !important;
+            cursor: pointer;
+        }
+
+        /* Botón guardar (principal) */
+        .submit-row input[type="submit"],
+        .submit-row .default {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
+            color: #ffffff !important;
+        }
+
+        .submit-row input[type="submit"]:hover,
+        .submit-row .default:hover {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4);
+        }
+
+        /* Botón eliminar */
+        .submit-row .deletelink,
+        .submit-row a.deletelink {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+            color: #ffffff !important;
+            padding: 12px 24px !important;
+            border-radius: 8px !important;
+            text-decoration: none !important;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .submit-row .deletelink:hover {
+            background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.4);
+        }
+
+        /* Checkboxes y radios */
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Inlines (formularios anidados) */
+        .inline-group {
+            background: #374151 !important;
+            border: 1px solid #4a5568 !important;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .inline-group h2 {
+            color: #90cdf4 !important;
+        }
+
+        /* Tablas dentro de formularios */
+        table {
+            background: #2d3748 !important;
+            border: 1px solid #4a5568 !important;
+        }
+
+        table th {
+            background: #1a202c !important;
+            color: #90cdf4 !important;
+            padding: 10px !important;
+        }
+
+        table td {
+            padding: 8px !important;
+            color: #e2e8f0 !important;
+            border-bottom: 1px solid #4a5568 !important;
+        }
+
+        /* Mensajes de error */
+        .errorlist {
+            background: #742a2a !important;
+            color: #feb2b2 !important;
+            border: 1px solid #9b2c2c !important;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 0;
+        }
+
+        .errornote {
+            background: #742a2a !important;
+            color: #feb2b2 !important;
+            border: 1px solid #9b2c2c !important;
+        }
+
+        /* Botones de agregar otro */
+        .add-row a,
+        .addlink {
+            color: #90cdf4 !important;
+            font-weight: 600;
+        }
+
+        .add-row a:hover,
+        .addlink:hover {
+            color: #63b3ed !important;
+        }
+
+        /* DateTimeShortcuts (calendarios) */
+        .datetimeshortcuts {
+            color: #90cdf4 !important;
+        }
+
+        /* Select2 (si está habilitado) */
+        .select2-container--default .select2-selection--single {
+            background-color: #1a202c !important;
+            border: 1px solid #4a5568 !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #e2e8f0 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <h1>
+        {% if add %}
+            Agregar {{ opts.verbose_name }}
+        {% else %}
+            Editar {{ opts.verbose_name }}
+        {% endif %}
+    </h1>
+
+    {{ block.super }}    {# <-- ESTO RENDERIZA EL FORMULARIO REAL #}
+</div>
+{% endblock %}

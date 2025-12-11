@@ -61,6 +61,28 @@
                 </div>
                 {% endif %}
 
+                <!-- Pagado -->
+                {% if form.pagado %}
+                <div class="mb-3">
+                    <div class="form-check">
+                        {{ form.pagado }}
+                        <label class="form-check-label fw-semibold" for="{{ form.pagado.id_for_label }}">
+                            Abonado
+                        </label>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Método de Pago -->
+                {% if form.metodo_pago %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Método de Pago</label>
+                    {{ form.metodo_pago }}
+                    <small class="form-text text-muted">Seleccionar solo si el turno fue pagado</small>
+                </div>
+                {% endif %}
+
+
                 <div class="mt-4 d-flex justify-content-end">
                     <button class="btn btn-primary px-4 py-2 fw-semibold rounded-3">
                         Guardar Cambios

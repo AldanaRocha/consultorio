@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    <i class="bi bi-credit-card-2-front me-2 text-success"></i>
+                    Pago del Turno
+                </h2>
+                <p class="text-muted">Revise los datos antes de continuar al pago</p>
+            </div>
+
+            <div class="card shadow-lg rounded-4">
+                <div class="card-body p-4">
+
+                    <p><strong>Paciente:</strong> {{ turno.paciente.get_full_name }}</p>
+                    <p><strong>Especialidad:</strong> {{ turno.especialidad.tipo }}</p>
+                    <p><strong>Médico:</strong> 
+                        {% if turno.medico %}
+                            {{ turno.medico.get_full_name }}
+                        {% else %}
+                            <span class="text-muted">A asignar</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Fecha y hora:</strong> {{ turno.fecha_hora|date:"d/m/Y H:i" }}</p>
+
+                    <hr>
+
+                    {% if turno.pagado %}
+                        <div class="alert alert-success text-center fw-semibold rounded-3">
+                            ✔ Este turno ya está pagado.
+                        </div>
+
+                        <a href="{% url 'turnos:mis_turnos' %}" 
+                           class="btn btn-outline-secondary w-100 mt-3">
+                            Volver a mis turnos
+                        </a>
+
+                    {% else %}
+                        <h5 class="text-center mb-3">Total a pagar: <strong>$3000</strong></h5>
+
+                        <!-- BOTÓN DE MERCADO PAGO -->
+                        <div class="text-center mt-4">
+                            <a href="{{ mp_preference_url }}" 
+                               class="btn btn-success btn-lg px-4 py-2 rounded-3 shadow-sm">
+                                <i class="bi bi-credit-card me-2"></i>
+                                Pagar con Mercado Pago
+                            </a>
+                        </div>
+
+                        <a href="{% url 'turnos:mis_turnos' %}" 
+                           class="btn btn-outline-secondary w-100 mt-4">
+                            Cancelar
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

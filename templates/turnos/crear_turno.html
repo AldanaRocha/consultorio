@@ -2,34 +2,125 @@
 {% load grupos_tags %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            
+            <!-- Encabezado Premium -->
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-dark mb-2">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Solicitar Turno
+                </h2>
+                <p class="text-muted">Complete los datos para agendar su consulta</p>
+            </div>
 
-    <h2 class="mb-4">Solicitar Turno</h2>
+            <!-- Card Premium del Formulario -->
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                
+                <!-- Barra decorativa superior -->
+                <div class="bg-gradient" style="height: 6px; background: linear-gradient(90deg, #4CAF50, #2196F3);"></div>
+                
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <!-- Wrapper para estilizar los campos del form -->
+                        <div class="form-premium">
+                            {{ form.as_p }}
+                        </div>
 
-    <div class="card shadow-sm p-4">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
+                        <!-- Botones con separación premium -->
+                        <div class="d-flex flex-column flex-sm-row gap-3 mt-4 pt-3 border-top">
+                            <button type="submit" class="btn btn-outline-success px-4 py-3 fw-semibold rounded-3 shadow-sm flex-grow-1">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Confirmar Turno
+                            </button>
+ 
+                            
+                            {% if user|has_group:"Paciente" %}
+                                <a href="{% url 'turnos:mis_turnos' %}" 
+                                   class="btn btn-outline-secondary px-4 py-3 fw-semibold rounded-3">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Volver
+                                </a>
+                            {% endif %}
 
-            <button class="btn btn-success px-4 py-2 fw-semibold rounded-3">
-                Confirmar Turno
-            </button>
-            {% if user|has_group:"Paciente" %}
-                <a href="{% url 'turnos:mis_turnos' %}" 
-                class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-3 ms-2">
-                    Volver
-                </a>
-            {% endif %}
+                            {% if user|has_group:"Recepcionista" or user|has_group:"Director" %}
+                                <a href="{% url 'turnos:turnos_recepcion' %}" 
+                                   class="btn btn-outline-secondary px-4 py-3 fw-semibold rounded-3">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Volver
+                                </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
 
+                <!-- Footer informativo opcional -->
+                <div class="card-footer bg-light border-0 text-center py-3">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Sus datos están protegidos y seguros
+                    </small>
+                </div>
+            </div>
 
-                {% if user|has_group:"Recepcionista" or user|has_group:"Director" %}
-                    <a href="{% url 'turnos:turnos_recepcion' %}" class="btn btn-primary">Volver</a>
-                {% endif %}
-
-
-
-        </form>
+        </div>
     </div>
-
 </div>
+
+<!-- Estilos Premium para el formulario -->
+<style>
+    .form-premium label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-premium input,
+    .form-premium select,
+    .form-premium textarea {
+        border: 2px solid #e0e0e0;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+    
+    .form-premium input:focus,
+    .form-premium select:focus,
+    .form-premium textarea:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.15);
+        outline: none;
+    }
+    
+    .form-premium p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .card {
+        transition: transform 0.3s ease;
+    }
+    
+    .btn {
+        transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .btn-success {
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        border: none;
+    }
+    
+    .btn-success:hover {
+        background: linear-gradient(135deg, #45a049, #3d8b40);
+    }
+</style>
 {% endblock %}

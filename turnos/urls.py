@@ -10,6 +10,8 @@ urlpatterns = [
     # Paciente
     path('mis/', views.MisTurnosView.as_view(), name='mis_turnos'),
 
+
+
     # Recepcionista
     path('recepcion/all/', views.TurnosRecepcionView.as_view(), name='turnos_recepcion'),
     path('recepcion/asistencia/<int:pk>/', views.MarcarAsistenciaView.as_view(), name='marcar_asistencia'),
@@ -21,4 +23,10 @@ urlpatterns = [
     # Médico
     path('medico/mis/', views.TurnosMedicoView.as_view(), name='turnos_medico'),
     path('medico/estado/<int:pk>/', views.CambiarEstadoTurnoView.as_view(), name='cambiar_estado_turno'),
+
+
+    
+    path('pagar/<int:turno_id>/', views.pagar_turno, name='pagar_turno'),
+    path('confirmar_pago/', views.confirmar_pago, name='confirmar_pago'),
+
 ]

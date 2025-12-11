@@ -19,37 +19,50 @@
 
     {% if turnos %}
         <table class="table table-hover shadow-sm rounded mt-4">
-            <thead class="table-light">
-                <tr>
-                    <th>Fecha</th>
-                    <th>Especialidad</th>
-                    <th>Médico</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for turno in turnos %}
-                <tr>
-                    <td>{{ turno.fecha_hora|date:"d/m/Y H:i" }}</td>
+    <thead class="table-light">
+        <tr>
+            <th>Fecha y hora</th>
+            <th>Especialidad</th>
+            <th>Médico</th>
+            <th>Estado</th>
+            <th>Pago</th>
+        </tr>
+    </thead>
 
-                    <!-- 🔥 Corrección acá -->
-                    <td>{{ turno.especialidad.tipo }}</td>
+    <tbody>
+        {% for turno in turnos %}
+        <tr>
+            <td>{{ turno.fecha_hora|date:"d/m/Y H:i" }}</td>
 
-                    <td>
-                        {% if turno.medico %}
-                            {{ turno.medico.get_full_name|default:turno.medico.username }}
-                        {% else %}
-                            <span class="text-muted">Sin asignar</span>
-                        {% endif %}
-                    </td>
+            <td>{{ turno.especialidad.tipo }}</td>
 
-                    <td>
-                        <span class="badge bg-secondary">{{ turno.estado }}</span>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <td>
+                {% if turno.medico %}
+                    {{ turno.medico.get_full_name|default:turno.medico.username }}
+                {% else %}
+                    <span class="text-muted">Sin asignar</span>
+                {% endif %}
+            </td>
+
+            <td>
+                <span class="badge bg-secondary">{{ turno.estado }}</span>
+            </td>
+
+            <td>
+                {% if not turno.pagado %}
+                    <a href="{% url 'turnos:pagar_turno' turno.id %}" 
+                       class="btn btn-sm btn-success px-3 py-1 rounded-3">
+                        <i class="bi bi-credit-card"></i> Pagar
+                    </a>
+                {% else %}
+                    <span class="badge bg-success">Pagado</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 
     {% else %}
         <div class="alert alert-info mt-4">

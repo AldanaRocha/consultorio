@@ -45,12 +45,21 @@ class Turno(models.Model):
     notificado_medico = models.BooleanField(default=False)      # la recepcionista puede avisar
     observaciones = models.TextField(blank=True)
     creado = models.DateTimeField(auto_now_add=True)
-
+    pagado = models.BooleanField(default=False)
+    metodo_pago = models.CharField(
+        max_length=20,
+        choices=[('mercadopago', 'Mercado Pago'), ('efectivo', 'Efectivo')],
+        blank=True,
+        null=True
+    )
+    id_pago_mp = models.CharField(max_length=100, blank=True, null=True)  # ID de MercadoPago
     class Meta:
         ordering = ['fecha_hora']
 
     def __str__(self):
         return f"{self.paciente} - {self.fecha_hora} - {self.estado}"
-
     def get_absolute_url(self):
-        return reverse('editar_turno', args=[self.pk])
+        return reverse('turnos:editar_turno', args=[self.pk])
+    
+
+
