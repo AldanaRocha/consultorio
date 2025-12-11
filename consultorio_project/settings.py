@@ -103,6 +103,7 @@ LOGOUT_REDIRECT_URL = "login"
 LOGIN_URL = 'login'
 
 # Security settings (se activan automáticamente cuando DEBUG=False)
+
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -110,4 +111,10 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
-    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+    
+    # Obtener CSRF_TRUSTED_ORIGINS y filtrar valores vacíos
+    csrf_origins = config('CSRF_TRUSTED_ORIGINS', default='')
+    if csrf_origins:
+        CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_origins.split(',') if origin.strip()]
+    else:
+        CSRF_TRUSTED_ORIGINS = []
